@@ -1,5 +1,3 @@
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
-
 # Travian Elephants Finder
 
 <img src="public/nature.png" alt="nature"/><br/>
@@ -102,4 +100,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 _Please note that this is a research project, I am by no means responsible for any usage of this tool._  
 _Use on your own behalf, I am also not responsible if your accounts get banned due to extensive use of this tool._
+
+---
+
+<p align="center">
+  <a href="https://savelife.in.ua/en/donate-en/" target="_blank">
+    <img src="./assets/come-back-alive.svg" alt="Donate"/>
+  </a>
+</p>
 
