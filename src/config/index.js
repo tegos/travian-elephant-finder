@@ -13,7 +13,7 @@ const config = {
     server: process.env.TRAVIAN_SERVER,
   },
 
-  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
 
   coordinates: {
     minX: process.env.MIN_X,
@@ -25,8 +25,8 @@ const config = {
   },
 
   delay: {
-    min: process.env.DELAY_MIN && 1000,
-    max: process.env.DELAY_MAX && 1500,
+    min: parseInt(process.env.DELAY_MIN, 10) || 1000,
+    max: parseInt(process.env.DELAY_MAX, 10) || 1500,
   },
 
   jsonFile: {

@@ -2,13 +2,14 @@ const excel = require('excel4node');
 const cheerio = require('cheerio');
 const sleep = require('system-sleep');
 const jsonfile = require('jsonfile');
-const NodeUnique = require('node-unique-array');
 const cliProgress = require('cli-progress');
 const config = require('~src/config');
 const util = require('~src/services/util');
 const travian = require('~src/services/travian');
 
-const bar = new cliProgress.Bar();
+util.checkConfiguration();
+
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 const workbook = new excel.Workbook();
 const worksheet = workbook.addWorksheet('Sheet 1', {});
@@ -36,23 +37,14 @@ if (!Array.isArray(oasisPositionsOccupiedArray)) {
   oasisPositionsOccupiedArray = [];
 }
 
-const uniquePositionOccupied = new NodeUnique();
+const posKey = (p) => `${p.x},${p.y}`;
+const occupiedSet = new Set(oasisPositionsOccupiedArray.map(posKey));
 
-uniquePositionOccupied.add(oasisPositionsOccupiedArray);
+oasisPositions = oasisPositions.filter((position) => !occupiedSet.has(posKey(position)));
 
-// filter for occupied
-oasisPositions = oasisPositions.filter((position) => {
-  let save = true;
-  if (uniquePositionOccupied.contains(position)) {
-    save = false;
-  }
-  return save;
-});
-
-oasisPositions.map((obj) => {
+oasisPositions.forEach((obj) => {
   const rObj = obj;
   rObj.distance = util.distance(obj.x, obj.y, config.coordinates.startX, config.coordinates.startY);
-  return rObj;
 });
 
 oasisPositions.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
@@ -137,11 +129,14 @@ for (let pos = 0; pos < oasisPositions.length; pos++) {
         .first();
 
       if (tileDetails.hasClass('oasis-3')) {
-        uniquePositionOccupied.add({
-          x,
-          y,
-        });
-        jsonfile.writeFileSync(config.jsonFile.oasisOccupied, uniquePositionOccupied.get());
+        occupiedSet.add(posKey({ x, y }));
+        jsonfile.writeFileSync(
+          config.jsonFile.oasisOccupied,
+          [...occupiedSet].map((k) => {
+            const [px, py] = k.split(',');
+            return { x: +px, y: +py };
+          }),
+        );
       }
       bar.increment();
     })
