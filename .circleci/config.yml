@@ -1,31 +1,22 @@
 ## References:
-# https://git.io/Jf3l9
-# https://circleci.com/docs/2.0/yarn/
-# https://circleci.com/docs/2.0/caching/#yarn-node
 # https://circleci.com/orbs/registry/orb/circleci/node
 # https://discuss.circleci.com/t/circleci-2-1-config-overview/26057
 version: 2.1
 
 orbs:
-  node: circleci/node@2.0.3
-
-commands:
-  setup-node-and-yarn-install-with-cache:
-    steps:
-      - node/install:
-          install-yarn: true
-          node-version: latest
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: yarn.lock
+  node: circleci/node@5.2.0
 
 jobs:
   lint-and-test:
     executor:
       name: node/default
+      tag: '20'
     steps:
       - checkout
-      - setup-node-and-yarn-install-with-cache
+      - node/install-packages:
+          pkg-manager: npm
+          cache-path: ~/.npm
+          override-ci-command: npm ci
       - run:
           name: Lint
           command: npm run lint
