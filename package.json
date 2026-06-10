@@ -1,6 +1,6 @@
 {
   "name": "travian-elephant-finder",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "dependencies": {
     "axios": "^1.7.9",
     "cheerio": "^1.2.0",
@@ -10,13 +10,15 @@
     "excel4node": "^1.8.2",
     "jsonfile": "^6.1.0",
     "lodash": "^4.18.1",
-    "mkdirp": "^3.0.1",
-    "system-sleep": "^1.3.8"
+    "mkdirp": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "author": "Myhkavko Ivan",
   "scripts": {
-    "preinstal": "cp .env.example .env && cp src/config/cookie.txt.example src/config/cookie.txt && cp src/config/token.txt.example src/config/token.txt",
-    "preinstal-windows": "copy .env.example .env & copy src\\config\\cookie.txt.example src\\config\\cookie.txt & copy src\\config\\token.txt.example src\\config\\token.txt",
+    "setup": "cp .env.example .env && cp src/config/cookie.txt.example src/config/cookie.txt && cp src/config/token.txt.example src/config/token.txt",
+    "setup:windows": "copy .env.example .env & copy src\\config\\cookie.txt.example src\\config\\cookie.txt & copy src\\config\\token.txt.example src\\config\\token.txt",
     "clean": "node src/scripts/cleanData.js",
     "collect": "node src/scripts/collectOasysPosition.js",
     "find": "node src/scripts/findAnimal.js",

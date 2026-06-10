@@ -1,5 +1,7 @@
 # Travian Elephants Finder
 
+[![CI](https://github.com/tegos/travian-elephant-finder/actions/workflows/ci.yml/badge.svg)](https://github.com/tegos/travian-elephant-finder/actions/workflows/ci.yml)
+
 <img src="public/nature.png" alt="nature"/><br/>
 
 The tool for analysis oases (free or occupied) and searching animals (Elephant and etc).
@@ -17,8 +19,8 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 ## Setup
 
 - clone the repo
-- install the dependencies, `yarn install`
-- run `npm run preinstal` or `npm run preinstal-windows`
+- install the dependencies: `npm install`
+- run `npm run setup` (Linux/macOS) or `npm run setup:windows`
 - you should probably register new fake account for these manipulations.
 
 ## Config
