@@ -26,9 +26,7 @@ axiosApiInstance.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest.isRetry) {
       originalRequest.isRetry = true;
       await auth.refreshToken();
-      axiosApiInstance.defaults.headers = {
-        Authorization: config.getBearerHeader(),
-      };
+      axiosApiInstance.defaults.headers.common.Authorization = config.getBearerHeader();
       console.log(config.getBearerHeader());
       return axiosApiInstance(originalRequest);
     }

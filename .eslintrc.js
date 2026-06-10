@@ -13,9 +13,20 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 11,
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['~src', './src'],
+          ['~root', '.'],
+        ],
+        extensions: ['.js'],
+      },
+    },
+  },
   rules: {
     'no-console': 'off',
     'no-loop-func': 'off',
-    'no-plusplus': [2, { allowForLoopAfterthoughts: true }]
+    'no-plusplus': [2, { allowForLoopAfterthoughts: true }],
   },
 };
