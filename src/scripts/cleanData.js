@@ -18,6 +18,6 @@ fs.readdir(directory, (readErr, files) => {
 
   jsonfile.writeFileSync(config.jsonFile.oasis, []);
   jsonfile.writeFileSync(config.jsonFile.oasisOccupied, []);
-});
 
-console.log(`Directory ${directory} cleaned`);
+  console.log(`Directory ${directory} cleaned`);
+});

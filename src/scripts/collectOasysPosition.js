@@ -6,7 +6,7 @@ const config = require('~src/config');
 const util = require('~src/services/util');
 const travian = require('~src/services/travian');
 
-const bar = new cliProgress.Bar();
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 let oasisPosition = jsonfile.readFileSync(config.jsonFile.oasis);
 
