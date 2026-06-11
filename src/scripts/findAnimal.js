@@ -4,23 +4,7 @@ const cliProgress = require('cli-progress');
 const config = require('#src/config');
 const util = require('#src/services/util');
 const travian = require('#src/services/travian');
-
-const delay = (ms) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
-const readJson = (filePath) => {
-  if (!fs.existsSync(filePath)) return [];
-  try {
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
-};
-
-const writeJson = (filePath, data) => fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers');
 
 const buildHtml = (rows, server) => `<!DOCTYPE html>
 <html lang="en">
@@ -143,7 +127,7 @@ async function main() {
     const { x, y } = oasisPositions[pos];
 
     try {
-      const r = await travian.viewTileDetails(x, y);
+      const r = await withRetry(() => travian.viewTileDetails(x, y));
       const html = r.data.html;
       const $ = cheerio.load(html);
 
@@ -197,6 +181,7 @@ async function main() {
         );
       }
     } catch (err) {
+      bar.stop();
       console.error(err);
       process.exit(1);
     }

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CLI tool to scan Travian map oases and find elephant locations",
   "license": "MIT",
+  "keywords": ["travian", "oasis", "elephant", "cli", "game-tool"],
   "repository": {
     "type": "git",
     "url": "https://github.com/tegos/travian-elephant-finder.git"

@@ -6,11 +6,16 @@ const directory = 'output';
 
 async function main() {
   const files = await fs.readdir(directory);
-  const filterFiles = files.filter((item) => !/(^|\/)\.[^/.]/g.test(item));
-  await Promise.all(filterFiles.map((file) => fs.unlink(path.join(directory, file))));
+  const toDelete = files.filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+
+  if (toDelete.length > 0) {
+    await Promise.all(toDelete.map((file) => fs.unlink(path.join(directory, file))));
+    console.log(`Removed: ${toDelete.join(', ')}`);
+  }
+
   await fs.writeFile(config.jsonFile.oasis, '[]');
   await fs.writeFile(config.jsonFile.oasisOccupied, '[]');
-  console.log(`Directory ${directory} cleaned`);
+  console.log('Output directory cleaned.');
 }
 
 main().catch((err) => {
