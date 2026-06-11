@@ -24,9 +24,10 @@
     "setup": "cp .env.example .env && cp src/config/cookie.txt.example src/config/cookie.txt && cp src/config/token.txt.example src/config/token.txt",
     "setup:windows": "copy .env.example .env & copy src\\config\\cookie.txt.example src\\config\\cookie.txt & copy src\\config\\token.txt.example src\\config\\token.txt",
     "clean": "node src/scripts/cleanData.js",
-    "collect": "node src/scripts/collectOasysPosition.js",
+    "collect": "node src/scripts/collectOasisPosition.js",
     "find": "node src/scripts/findAnimal.js",
-    "lint": "eslint --fix --ext .js src/",
+    "lint": "eslint --ext .js src/",
+    "lint:fix": "eslint --fix --ext .js src/",
     "test": "echo \"No test specified\""
   },
   "devDependencies": {

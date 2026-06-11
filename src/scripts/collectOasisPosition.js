@@ -1,3 +1,4 @@
+const fs = require('fs');
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
@@ -7,13 +8,20 @@ const travian = require('#src/services/travian');
 
 const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+process.on('SIGINT', () => {
+  bar.stop();
+  process.exit(0);
+});
+
 async function main() {
   util.checkConfiguration();
 
-  let oasisPosition = jsonfile.readFileSync(config.jsonFile.oasis);
-
-  if (!Array.isArray(oasisPosition)) {
-    oasisPosition = [];
+  let oasisPosition = [];
+  if (fs.existsSync(config.jsonFile.oasis)) {
+    oasisPosition = jsonfile.readFileSync(config.jsonFile.oasis);
+    if (!Array.isArray(oasisPosition)) oasisPosition = [];
   }
 
   const startX = Math.min(+config.coordinates.minX, +config.coordinates.maxX);
@@ -22,7 +30,6 @@ async function main() {
   const endY = Math.max(+config.coordinates.minY, +config.coordinates.maxY);
 
   const totalFields = (endX - startX) * (endY - startY);
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   bar.start(totalFields, 0);
 
   for (let x = startX; x < endX; x++) {

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const ExcelJS = require('exceljs');
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
@@ -8,6 +9,13 @@ const travian = require('#src/services/travian');
 
 const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+process.on('SIGINT', () => {
+  bar.stop();
+  process.exit(0);
+});
+
 async function main() {
   util.checkConfiguration();
 
@@ -16,11 +24,16 @@ async function main() {
 
   worksheet.addRow(['x', 'y', 'Elephant', 'Another animal', 'hasCrocodile', 'hasTiger', 'totalAnimal']);
 
-  let oasisPositions = jsonfile.readFileSync(config.jsonFile.oasis);
-  let oasisPositionsOccupiedArray = jsonfile.readFileSync(config.jsonFile.oasisOccupied);
+  let oasisPositions = [];
+  if (fs.existsSync(config.jsonFile.oasis)) {
+    oasisPositions = jsonfile.readFileSync(config.jsonFile.oasis);
+    if (!Array.isArray(oasisPositions)) oasisPositions = [];
+  }
 
-  if (!Array.isArray(oasisPositionsOccupiedArray)) {
-    oasisPositionsOccupiedArray = [];
+  let oasisPositionsOccupiedArray = [];
+  if (fs.existsSync(config.jsonFile.oasisOccupied)) {
+    oasisPositionsOccupiedArray = jsonfile.readFileSync(config.jsonFile.oasisOccupied);
+    if (!Array.isArray(oasisPositionsOccupiedArray)) oasisPositionsOccupiedArray = [];
   }
 
   const posKey = (p) => `${p.x},${p.y}`;
@@ -41,7 +54,6 @@ async function main() {
   const file = `data/elephant_${fileNameAdd}.xlsx`;
   util.createFile(file);
 
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   bar.start(oasisPositions.length, 0);
 
   for (let pos = 0; pos < oasisPositions.length; pos++) {
