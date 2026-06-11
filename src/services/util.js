@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const config = require('#src/config');
 
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-const distance = (x1, y1, x2, y2) => Math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2));
+const distance = (x1, y1, x2, y2) => Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 
 const createFile = (filename) => {
   fs.mkdirSync(path.dirname(filename), { recursive: true });
@@ -26,11 +26,11 @@ const createFile = (filename) => {
  */
 const isEmpty = function isEmpty(value) {
   return (
-    value === null // check for null
-    || value === undefined // check for undefined
-    || value === '' // check for empty string
-    || (Array.isArray(value) && value.length === 0) // check for empty array
-    || (typeof value === 'object' && Object.keys(value).length === 0) // check for empty object
+    value === null || // check for null
+    value === undefined || // check for undefined
+    value === '' || // check for empty string
+    (Array.isArray(value) && value.length === 0) || // check for empty array
+    (typeof value === 'object' && Object.keys(value).length === 0) // check for empty object
   );
 };
 

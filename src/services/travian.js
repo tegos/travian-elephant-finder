@@ -23,10 +23,7 @@ const Travian = function Travian() {
       y,
     };
 
-    return axiosApiInstance.post(
-      `${this.getApiUrl()}/map/tile-details`,
-      sendData,
-    );
+    return axiosApiInstance.post(`${this.getApiUrl()}/map/tile-details`, sendData);
   };
 };
 

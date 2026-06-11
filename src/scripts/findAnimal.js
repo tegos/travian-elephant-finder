@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('node:fs');
 const ExcelJS = require('exceljs');
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
@@ -7,7 +7,10 @@ const config = require('#src/config');
 const util = require('#src/services/util');
 const travian = require('#src/services/travian');
 
-const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+const delay = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -22,7 +25,15 @@ async function main() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Sheet 1');
 
-  worksheet.addRow(['x', 'y', 'Elephant', 'Another animal', 'hasCrocodile', 'hasTiger', 'totalAnimal']);
+  worksheet.addRow([
+    'x',
+    'y',
+    'Elephant',
+    'Another animal',
+    'hasCrocodile',
+    'hasTiger',
+    'totalAnimal',
+  ]);
 
   let oasisPositions = [];
   if (fs.existsSync(config.jsonFile.oasis)) {
@@ -60,7 +71,6 @@ async function main() {
     const { x, y } = oasisPositions[pos];
 
     try {
-      // eslint-disable-next-line no-await-in-loop
       const r = await travian.viewTileDetails(x, y);
       const data = r.data.html;
       const $ = cheerio.load(data);
@@ -91,7 +101,6 @@ async function main() {
         const { length: crocs } = hasCrocodile;
         const { length: tigers } = hasTiger;
         worksheet.addRow([x, y, amount, anotherAnimal, crocs, tigers, totalAnimal]);
-        // eslint-disable-next-line no-await-in-loop
         await workbook.xlsx.writeFile(file);
       }
 
@@ -112,7 +121,6 @@ async function main() {
     }
 
     bar.increment();
-    // eslint-disable-next-line no-await-in-loop
     await delay(util.randomIntFromInterval(config.delay.min, config.delay.max));
   }
 

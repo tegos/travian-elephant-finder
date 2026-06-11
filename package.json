@@ -26,14 +26,11 @@
     "clean": "node src/scripts/cleanData.js",
     "collect": "node src/scripts/collectOasisPosition.js",
     "find": "node src/scripts/findAnimal.js",
-    "lint": "eslint --ext .js src/",
-    "lint:fix": "eslint --fix --ext .js src/",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write src/",
     "test": "echo \"No test specified\""
   },
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-import": "^2.32.0"
+    "@biomejs/biome": "^2.4.16"
   }
 }

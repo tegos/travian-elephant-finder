@@ -7,16 +7,19 @@ const axiosApiInstance = axios.create({ timeout: 10000 });
 axiosApiInstance.defaults.withCredentials = true;
 
 // Request interceptor for API calls
-axiosApiInstance.interceptors.request.use((AxiosConfig) => {
-  const newAxiosConfig = AxiosConfig;
-  newAxiosConfig.headers = {
-    cookie: config.authorization.cookie,
-    Authorization: config.getBearerHeader(),
-    'User-Agent': config.userAgent,
-  };
+axiosApiInstance.interceptors.request.use(
+  (AxiosConfig) => {
+    const newAxiosConfig = AxiosConfig;
+    newAxiosConfig.headers = {
+      cookie: config.authorization.cookie,
+      Authorization: config.getBearerHeader(),
+      'User-Agent': config.userAgent,
+    };
 
-  return newAxiosConfig;
-}, (error) => Promise.reject(error));
+    return newAxiosConfig;
+  },
+  (error) => Promise.reject(error),
+);
 
 // Response interceptor for API calls
 axiosApiInstance.interceptors.response.use(
