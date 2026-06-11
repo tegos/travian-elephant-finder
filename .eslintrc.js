@@ -17,8 +17,8 @@ module.exports = {
     'import/resolver': {
       alias: {
         map: [
-          ['~src', './src'],
-          ['~root', '.'],
+          ['#src', './src'],
+          ['#root', '.'],
         ],
         extensions: ['.js'],
       },

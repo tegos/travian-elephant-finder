@@ -1,5 +1,5 @@
-const axiosApiInstance = require('~src/libs/axiosApi');
-const config = require('~src/config');
+const axiosApiInstance = require('#src/libs/axiosApi');
+const config = require('#src/config');
 
 const Travian = function Travian() {
   this.animals = {
