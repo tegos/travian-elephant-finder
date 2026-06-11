@@ -19,7 +19,7 @@
     "dotenv": "^17.0.0"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "author": "Myhkavko Ivan",
   "scripts": {

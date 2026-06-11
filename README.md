@@ -42,7 +42,7 @@ Set correct configuration in:
 
    <img src="public/cookies.png" alt="cookies"/>
 
-4. Insert selected cookie value into `src/config/cookie.text` file
+4. Insert selected cookie value into `src/config/cookie.txt` file
 
 ### MIN_X, MIN_Y
 
@@ -64,13 +64,15 @@ Position of search (your village or cap, probably), calculate distance (for sort
 - `npm run collect` - (collecting oases position) and wait… It will take a lot of time (depends on your config (MIN_X,
   MIN_Y, MAX_X, MAX_Y, DELAY_MIN, DELAY_MAX) etc)
 
-<img src="public/collect.png" alt="collect"/>
+<img src="public/npm-collect.png" alt="collect"/>
 
 - `npm run find` - find animals in oases
 
-<img src="public/find-process.png" alt="find-process"/>
+<img src="public/npm-find.png" alt="npm-find"/>
 
-Result in CSV file: `output/elephant_*.csv`
+Results saved to `output/`:
+- `elephant_*.csv` — raw data
+- `elephant_*.html` — sortable report (open in browser)
 
 |  x  |  y  | Elephant | Another animal | hasCrocodile | hasTiger | totalAnimal |
 | :---: | :---: | :--------: | :--------------: | :------------: | :--------: | :-----------: |
