@@ -20,7 +20,7 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 
 - clone the repo
 - install the dependencies: `npm install`
-- run `npm run setup` (Linux/macOS) or `npm run setup:windows`
+- run `npm run setup`
 - you should probably register new fake account for these manipulations.
 
 ## Config
