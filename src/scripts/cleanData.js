@@ -2,7 +2,7 @@ const fs = require('node:fs').promises;
 const path = require('node:path');
 const config = require('#src/config');
 
-const directory = 'data';
+const directory = 'output';
 
 async function main() {
   const files = await fs.readdir(directory);

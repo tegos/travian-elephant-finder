@@ -9,9 +9,9 @@ The tool for analysis oases (free or occupied) and searching animals (Elephant a
 Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 
 <p align="center">
-<img src="public/fire_and_sand.png" alt="fire_and_sand"/><br/>
-<img src="public/legends_logo_black.png" alt="legends_logo_black"/>
-<img src="public/shadow_empires_logo.png" alt="legends_logo_black"/>
+<img src="public/fire-and-sand.png" alt="fire-and-sand"/><br/>
+<img src="public/legends-logo-black.png" alt="legends-logo-black"/>
+<img src="public/shadow-empires-logo.png" alt="legends-logo-black"/>
 </p>
 
 ## Setup
@@ -36,7 +36,7 @@ Set correct configuration in:
 
 2. Open DevTools(F12 Chrome), Network tab’s, filter by XHR:
 
-    <img src="public/dev_tools.png" alt="dev_tools"/>
+    <img src="public/dev-tools.png" alt="dev-tools"/>
 
 3. Select random request from list (F5 if it’s empty) and copy **cookie** from request:
 
@@ -56,7 +56,7 @@ The Bottom Right Corner Co-Ordinate of the Map Area to be searched.
 
 Position of search (your village or cap, probably), calculate distance (for sorting oases closest to you)
 
-<img src="public/map_min_max.png" alt="map_min_max"/>
+<img src="public/map-min-max.png" alt="map-min-max"/>
 
 ## Start
 
@@ -70,7 +70,7 @@ Position of search (your village or cap, probably), calculate distance (for sort
 
 <img src="public/find-process.png" alt="find-process"/>
 
-Result in CSV file: `data/elephant_*.csv`
+Result in CSV file: `output/elephant_*.csv`
 
 |  x  |  y  | Elephant | Another animal | hasCrocodile | hasTiger | totalAnimal |
 | :---: | :---: | :--------: | :--------------: | :------------: | :--------: | :-----------: |
@@ -79,7 +79,7 @@ Result in CSV file: `data/elephant_*.csv`
 | -42 |  14 | 3 | 4 | 0 | 0 | 77 |
 | -48 |  -7 | 3 | 4 | 0 | 0 | 84 |
 
-<img src="public/result_oasis.png" alt="result_oasis"/>
+<img src="public/result-oasis.png" alt="result-oasis"/>
 
 ## Technologies
 

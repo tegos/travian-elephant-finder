@@ -34,9 +34,12 @@ node_modules/
 # JetBrains IDEs
 .idea
 
-# Data output (keep placeholder)
-!/data/.gitkeep
-/data/*
+# Output directory (keep placeholder)
+!/output/.gitkeep
+/output/*
+
+# Legacy data directory
+/data/
 
 # Config secrets
 src/config/*.txt

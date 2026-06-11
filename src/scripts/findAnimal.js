@@ -130,9 +130,9 @@ async function main() {
 
   const date = new Date();
   const fileNameAdd = `${date.toLocaleDateString()}_${date.getTime()}`;
-  const csvFile = `data/elephant_${fileNameAdd}.csv`;
-  const htmlFile = `data/elephant_${fileNameAdd}.html`;
-  fs.mkdirSync('data', { recursive: true });
+  const csvFile = `output/elephant_${fileNameAdd}.csv`;
+  const htmlFile = `output/elephant_${fileNameAdd}.html`;
+  fs.mkdirSync('output', { recursive: true });
   fs.writeFileSync(csvFile, CSV_HEADER);
 
   const results = [];
