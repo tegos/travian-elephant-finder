@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('node:fs');
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
@@ -6,7 +6,10 @@ const config = require('#src/config');
 const util = require('#src/services/util');
 const travian = require('#src/services/travian');
 
-const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+const delay = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -35,7 +38,6 @@ async function main() {
   for (let x = startX; x < endX; x++) {
     for (let y = startY; y < endY; y++) {
       try {
-        // eslint-disable-next-line no-await-in-loop
         const response = await travian.viewTileDetails(x, y);
         const { html } = response.data;
         const $ = cheerio.load(html);
@@ -52,7 +54,6 @@ async function main() {
       }
 
       bar.increment();
-      // eslint-disable-next-line no-await-in-loop
       await delay(util.randomIntFromInterval(config.delay.min, config.delay.max));
     }
   }

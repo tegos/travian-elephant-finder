@@ -10,7 +10,7 @@ const Auth = function Auth() {
       const bodyString = response.data;
 
       return !bodyString.includes('action="/login.php"');
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   };
@@ -29,8 +29,8 @@ const Auth = function Auth() {
       const $ = cheerio.load(bodyString);
 
       const scriptNode = $('head > script')
-        .map((i, x) => x.children[0])
-        .filter((i, x) => x && x.data.match(/eval/))
+        .map((_i, x) => x.children[0])
+        .filter((_i, x) => x?.data.match(/eval/))
         .get(0);
 
       if (scriptNode) {
@@ -48,15 +48,12 @@ const Auth = function Auth() {
         const matches = regExp.exec(atobStringFull);
 
         let atobString = matches[1];
-        atobString = atobString.replace(/'/g, '')
-          .replace('atob(', '');
+        atobString = atobString.replace(/'/g, '').replace('atob(', '');
 
-        const tokenInit = Buffer.from(atobString, 'base64')
-          .toString('binary');
+        const tokenInit = Buffer.from(atobString, 'base64').toString('binary');
 
         const parts = tokenInit.split('&&');
-        token = parts[1].replace(/'/g, '')
-          .trim();
+        token = parts[1].replace(/'/g, '').trim();
 
         config.setToken(token);
       }
