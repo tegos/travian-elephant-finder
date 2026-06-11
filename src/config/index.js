@@ -30,8 +30,8 @@ const config = {
   },
 
   jsonFile: {
-    oasis: 'data/oasis.json',
-    oasisOccupied: 'data/oasis-occupied.json',
+    oasis: 'output/oasis.json',
+    oasisOccupied: 'output/oasis-occupied.json',
   },
 };
 
