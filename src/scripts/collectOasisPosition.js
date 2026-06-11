@@ -1,6 +1,5 @@
 const fs = require('node:fs');
 const cheerio = require('cheerio');
-const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
 const config = require('#src/config');
 const util = require('#src/services/util');
@@ -10,6 +9,18 @@ const delay = (ms) =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+
+const readJson = (filePath) => {
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeJson = (filePath, data) => fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -21,11 +32,7 @@ process.on('SIGINT', () => {
 async function main() {
   util.checkConfiguration();
 
-  let oasisPosition = [];
-  if (fs.existsSync(config.jsonFile.oasis)) {
-    oasisPosition = jsonfile.readFileSync(config.jsonFile.oasis);
-    if (!Array.isArray(oasisPosition)) oasisPosition = [];
-  }
+  const oasisPosition = readJson(config.jsonFile.oasis);
 
   const startX = Math.min(+config.coordinates.minX, +config.coordinates.maxX);
   const endX = Math.max(+config.coordinates.minX, +config.coordinates.maxX);
@@ -46,7 +53,7 @@ async function main() {
         const className = tileDetails.attr('class');
         if (className.includes('oasis')) {
           oasisPosition.push({ x, y });
-          jsonfile.writeFileSync(config.jsonFile.oasis, oasisPosition);
+          writeJson(config.jsonFile.oasis, oasisPosition);
         }
       } catch (err) {
         console.error(err);

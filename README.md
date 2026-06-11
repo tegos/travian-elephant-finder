@@ -14,8 +14,6 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 <img src="public/shadow_empires_logo.png" alt="legends_logo_black"/>
 </p>
 
-## How to use
-
 ## Setup
 
 - clone the repo
@@ -72,7 +70,7 @@ Position of search (your village or cap, probably), calculate distance (for sort
 
 <img src="public/find-process.png" alt="find-process"/>
 
-Result in excel file: `data/elephant_*.xlsx`
+Result in CSV file: `data/elephant_*.csv`
 
 |  x  |  y  | Elephant | Another animal | hasCrocodile | hasTiger | totalAnimal |
 | :---: | :---: | :--------: | :--------------: | :------------: | :--------: | :-----------: |
@@ -83,12 +81,13 @@ Result in excel file: `data/elephant_*.xlsx`
 
 <img src="public/result_oasis.png" alt="result_oasis"/>
 
-## Technologies:
+## Technologies
 
-- **JavaScript**;
-- **NodeJS**;
-- **Axios**;
-- **Cheerio**.
+- **Node.js** >=20
+- **Axios** — HTTP requests
+- **Cheerio** — HTML parsing
+- **cli-progress** — progress bar
+- **dotenv** — environment config
 
 ## Author
 

@@ -1,7 +1,5 @@
 const fs = require('node:fs');
-const ExcelJS = require('exceljs');
 const cheerio = require('cheerio');
-const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
 const config = require('#src/config');
 const util = require('#src/services/util');
@@ -12,6 +10,18 @@ const delay = (ms) =>
     setTimeout(resolve, ms);
   });
 
+const readJson = (filePath) => {
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeJson = (filePath, data) => fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 process.on('SIGINT', () => {
@@ -19,33 +29,13 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
+const CSV_HEADER = 'x,y,Elephant,Another animal,hasCrocodile,hasTiger,totalAnimal\n';
+
 async function main() {
   util.checkConfiguration();
 
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Sheet 1');
-
-  worksheet.addRow([
-    'x',
-    'y',
-    'Elephant',
-    'Another animal',
-    'hasCrocodile',
-    'hasTiger',
-    'totalAnimal',
-  ]);
-
-  let oasisPositions = [];
-  if (fs.existsSync(config.jsonFile.oasis)) {
-    oasisPositions = jsonfile.readFileSync(config.jsonFile.oasis);
-    if (!Array.isArray(oasisPositions)) oasisPositions = [];
-  }
-
-  let oasisPositionsOccupiedArray = [];
-  if (fs.existsSync(config.jsonFile.oasisOccupied)) {
-    oasisPositionsOccupiedArray = jsonfile.readFileSync(config.jsonFile.oasisOccupied);
-    if (!Array.isArray(oasisPositionsOccupiedArray)) oasisPositionsOccupiedArray = [];
-  }
+  let oasisPositions = readJson(config.jsonFile.oasis);
+  const oasisPositionsOccupiedArray = readJson(config.jsonFile.oasisOccupied);
 
   const posKey = (p) => `${p.x},${p.y}`;
   const occupiedSet = new Set(oasisPositionsOccupiedArray.map(posKey));
@@ -62,8 +52,9 @@ async function main() {
 
   const date = new Date();
   const fileNameAdd = `${date.toLocaleDateString()}_${date.getTime()}`;
-  const file = `data/elephant_${fileNameAdd}.xlsx`;
-  util.createFile(file);
+  const file = `data/elephant_${fileNameAdd}.csv`;
+  fs.mkdirSync('data', { recursive: true });
+  fs.writeFileSync(file, CSV_HEADER);
 
   bar.start(oasisPositions.length, 0);
 
@@ -72,8 +63,8 @@ async function main() {
 
     try {
       const r = await travian.viewTileDetails(x, y);
-      const data = r.data.html;
-      const $ = cheerio.load(data);
+      const html = r.data.html;
+      const $ = cheerio.load(html);
 
       const table = $('#troop_info').first();
       const td = table.find(`img.${travian.animals.Elephants}`);
@@ -98,16 +89,14 @@ async function main() {
       }
 
       if (amount > 0) {
-        const { length: crocs } = hasCrocodile;
-        const { length: tigers } = hasTiger;
-        worksheet.addRow([x, y, amount, anotherAnimal, crocs, tigers, totalAnimal]);
-        await workbook.xlsx.writeFile(file);
+        const row = `${x},${y},${amount},${anotherAnimal},${hasCrocodile.length},${hasTiger.length},${totalAnimal}\n`;
+        fs.appendFileSync(file, row);
       }
 
       const tileDetails = $('#tileDetails').first();
       if (tileDetails.hasClass('oasis-3')) {
         occupiedSet.add(posKey({ x, y }));
-        jsonfile.writeFileSync(
+        writeJson(
           config.jsonFile.oasisOccupied,
           [...occupiedSet].map((k) => {
             const [px, py] = k.split(',');

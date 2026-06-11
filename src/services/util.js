@@ -1,36 +1,16 @@
-const fs = require('node:fs');
-const path = require('node:path');
 const config = require('#src/config');
 
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const distance = (x1, y1, x2, y2) => Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 
-const createFile = (filename) => {
-  fs.mkdirSync(path.dirname(filename), { recursive: true });
-  if (!fs.existsSync(filename)) {
-    fs.writeFileSync(filename, '');
-  }
-};
-
-/**
- * Checks if a JavaScript value is empty
- * @example
- *    isEmpty(null); // true
- *    isEmpty(undefined); // true
- *    isEmpty(''); // true
- *    isEmpty([]); // true
- *    isEmpty({}); // true
- * @param {any} value - item to test
- * @returns {boolean} true if empty, otherwise false
- */
 const isEmpty = function isEmpty(value) {
   return (
-    value === null || // check for null
-    value === undefined || // check for undefined
-    value === '' || // check for empty string
-    (Array.isArray(value) && value.length === 0) || // check for empty array
-    (typeof value === 'object' && Object.keys(value).length === 0) // check for empty object
+    value === null ||
+    value === undefined ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === 'object' && Object.keys(value).length === 0)
   );
 };
 
@@ -63,6 +43,5 @@ const checkConfiguration = function checkConfiguration() {
 
 exports.distance = distance;
 exports.randomIntFromInterval = randomIntFromInterval;
-exports.createFile = createFile;
 exports.checkConfiguration = checkConfiguration;
 exports.isEmpty = isEmpty;
