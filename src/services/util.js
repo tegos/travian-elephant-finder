@@ -4,17 +4,14 @@ const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - mi
 
 const distance = (x1, y1, x2, y2) => Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 
-const isEmpty = function isEmpty(value) {
-  return (
-    value === null ||
-    value === undefined ||
-    value === '' ||
-    (Array.isArray(value) && value.length === 0) ||
-    (typeof value === 'object' && Object.keys(value).length === 0)
-  );
-};
+const isEmpty = (value) =>
+  value === null ||
+  value === undefined ||
+  value === '' ||
+  (Array.isArray(value) && value.length === 0) ||
+  (typeof value === 'object' && Object.keys(value).length === 0);
 
-const checkConfiguration = function checkConfiguration() {
+const checkConfiguration = () => {
   const requiredOptions = [
     'authorization.cookie',
     'travian.server',
@@ -26,18 +23,11 @@ const checkConfiguration = function checkConfiguration() {
     'coordinates.startY',
   ];
 
-  const emptyConfigOptions = [];
+  const missing = requiredOptions.filter((opt) => isEmpty(config.get(opt)));
 
-  for (let i = 0; i < requiredOptions.length; i++) {
-    const option = requiredOptions[i];
-    if (isEmpty(config.get(option))) {
-      emptyConfigOptions.push(option);
-    }
-  }
-
-  if (emptyConfigOptions.length > 0) {
-    console.warn(`You must provide correct configuration for this option: ${emptyConfigOptions}`);
-    process.exit();
+  if (missing.length > 0) {
+    console.warn(`Missing required configuration: ${missing.join(', ')}`);
+    process.exit(1);
   }
 };
 
