@@ -5,7 +5,7 @@ dotenv.config();
 
 const config = {
   authorization: {
-    cookie: String(fs.readFileSync('src/config/cookie.txt')),
+    cookie: fs.readFileSync('src/config/cookie.txt', 'utf8').trim(),
   },
 
   travian: {
@@ -35,7 +35,7 @@ const config = {
 };
 
 config.getToken = function getToken() {
-  return String(fs.readFileSync('src/config/token.txt'));
+  return fs.readFileSync('src/config/token.txt', 'utf8').trim();
 };
 
 config.getBearerHeader = function getBearerHeader() {
