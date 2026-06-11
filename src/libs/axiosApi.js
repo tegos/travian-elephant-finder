@@ -1,6 +1,6 @@
 const axios = require('axios');
-const auth = require('~src/services/auth');
-const config = require('~src/config');
+const auth = require('#src/services/auth');
+const config = require('#src/config');
 
 const axiosApiInstance = axios.create();
 
@@ -27,7 +27,6 @@ axiosApiInstance.interceptors.response.use(
       originalRequest.isRetry = true;
       await auth.refreshToken();
       axiosApiInstance.defaults.headers.common.Authorization = config.getBearerHeader();
-      console.log(config.getBearerHeader());
       return axiosApiInstance(originalRequest);
     }
     return Promise.reject(error);

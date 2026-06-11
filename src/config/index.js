@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 const fs = require('fs');
-const dot = require('dot-object');
 
 dotenv.config();
 
@@ -13,7 +12,7 @@ const config = {
     server: process.env.TRAVIAN_SERVER,
   },
 
-  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
 
   coordinates: {
     minX: process.env.MIN_X,
@@ -45,7 +44,7 @@ config.getBearerHeader = function getBearerHeader() {
 };
 
 config.get = function get(option) {
-  return dot.pick(option, this);
+  return option.split('.').reduce((obj, key) => obj && obj[key], this);
 };
 
 config.setToken = function setToken(token) {

@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
-const axiosDefaultInstance = require('~src/libs/axiosDefault');
-const config = require('~src/config');
+const axiosDefaultInstance = require('#src/libs/axiosDefault');
+const config = require('#src/config');
 
 const Auth = function Auth() {
   this.isCookieCorrect = async function isCookieCorrect() {

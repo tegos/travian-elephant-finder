@@ -1,26 +1,20 @@
-const excel = require('excel4node');
+const ExcelJS = require('exceljs');
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
-const config = require('~src/config');
-const util = require('~src/services/util');
-const travian = require('~src/services/travian');
+const config = require('#src/config');
+const util = require('#src/services/util');
+const travian = require('#src/services/travian');
 
 const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
 async function main() {
   util.checkConfiguration();
 
-  const workbook = new excel.Workbook();
-  const worksheet = workbook.addWorksheet('Sheet 1', {});
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Sheet 1');
 
-  worksheet.cell(1, 1).string('x');
-  worksheet.cell(1, 2).string('y');
-  worksheet.cell(1, 3).string('Elephant');
-  worksheet.cell(1, 4).string('Another animal');
-  worksheet.cell(1, 5).string('hasCrocodile');
-  worksheet.cell(1, 6).string('hasTiger');
-  worksheet.cell(1, 7).string('totalAnimal');
+  worksheet.addRow(['x', 'y', 'Elephant', 'Another animal', 'hasCrocodile', 'hasTiger', 'totalAnimal']);
 
   let oasisPositions = jsonfile.readFileSync(config.jsonFile.oasis);
   let oasisPositionsOccupiedArray = jsonfile.readFileSync(config.jsonFile.oasisOccupied);
@@ -49,8 +43,6 @@ async function main() {
 
   const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   bar.start(oasisPositions.length, 0);
-
-  let rowCounter = 2;
 
   for (let pos = 0; pos < oasisPositions.length; pos++) {
     const { x, y } = oasisPositions[pos];
@@ -84,15 +76,11 @@ async function main() {
       }
 
       if (amount > 0) {
-        worksheet.cell(rowCounter, 1).number(x);
-        worksheet.cell(rowCounter, 2).number(y);
-        worksheet.cell(rowCounter, 3).number(amount);
-        worksheet.cell(rowCounter, 4).number(anotherAnimal);
-        worksheet.cell(rowCounter, 5).number(hasCrocodile.length);
-        worksheet.cell(rowCounter, 6).number(hasTiger.length);
-        worksheet.cell(rowCounter, 7).number(totalAnimal);
-        rowCounter += 1;
-        workbook.write(file);
+        const { length: crocs } = hasCrocodile;
+        const { length: tigers } = hasTiger;
+        worksheet.addRow([x, y, amount, anotherAnimal, crocs, tigers, totalAnimal]);
+        // eslint-disable-next-line no-await-in-loop
+        await workbook.xlsx.writeFile(file);
       }
 
       const tileDetails = $('#tileDetails').first();

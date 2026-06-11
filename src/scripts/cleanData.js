@@ -1,23 +1,17 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const jsonfile = require('jsonfile');
-const config = require('~src/config');
+const config = require('#src/config');
 
 const directory = 'data';
 
-fs.readdir(directory, (readErr, files) => {
-  if (readErr) throw readErr;
-
+async function main() {
+  const files = await fs.readdir(directory);
   const filterFiles = files.filter((item) => !(/(^|\/)\.[^/.]/g).test(item));
-
-  filterFiles.forEach((file) => {
-    fs.unlink(path.join(directory, file), (err) => {
-      if (err) throw err;
-    });
-  });
-
+  await Promise.all(filterFiles.map((file) => fs.unlink(path.join(directory, file))));
   jsonfile.writeFileSync(config.jsonFile.oasis, []);
   jsonfile.writeFileSync(config.jsonFile.oasisOccupied, []);
-
   console.log(`Directory ${directory} cleaned`);
-});
+}
+
+main().catch((err) => { console.error(err); process.exit(1); });

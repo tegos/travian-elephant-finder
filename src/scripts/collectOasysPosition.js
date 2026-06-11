@@ -1,9 +1,9 @@
 const cheerio = require('cheerio');
 const jsonfile = require('jsonfile');
 const cliProgress = require('cli-progress');
-const config = require('~src/config');
-const util = require('~src/services/util');
-const travian = require('~src/services/travian');
+const config = require('#src/config');
+const util = require('#src/services/util');
+const travian = require('#src/services/travian');
 
 const delay = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
