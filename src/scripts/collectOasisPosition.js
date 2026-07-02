@@ -1,9 +1,9 @@
 const cheerio = require('cheerio');
 const cliProgress = require('cli-progress');
-const config = require('#src/config');
-const util = require('#src/services/util');
-const travian = require('#src/services/travian');
-const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers');
+const config = require('#src/config/index.js');
+const util = require('#src/services/util.js');
+const travian = require('#src/services/travian.js');
+const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers.js');
 
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 

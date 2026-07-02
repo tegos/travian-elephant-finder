@@ -1,6 +1,6 @@
 const axios = require('axios');
-const auth = require('#src/services/auth');
-const config = require('#src/config');
+const auth = require('#src/services/auth.js');
+const config = require('#src/config/index.js');
 
 const axiosApiInstance = axios.create({ timeout: 10000 });
 

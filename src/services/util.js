@@ -1,4 +1,4 @@
-const config = require('#src/config');
+const config = require('#src/config/index.js');
 
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 

@@ -1,10 +1,10 @@
 const fs = require('node:fs');
 const cheerio = require('cheerio');
 const cliProgress = require('cli-progress');
-const config = require('#src/config');
-const util = require('#src/services/util');
-const travian = require('#src/services/travian');
-const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers');
+const config = require('#src/config/index.js');
+const util = require('#src/services/util.js');
+const travian = require('#src/services/travian.js');
+const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers.js');
 
 const buildHtml = (rows, server) => `<!DOCTYPE html>
 <html lang="en">
@@ -113,7 +113,8 @@ async function main() {
   oasisPositions.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
 
   const date = new Date();
-  const fileNameAdd = `${date.toLocaleDateString()}_${date.getTime()}`;
+  const isoDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const fileNameAdd = `${isoDate}_${date.getTime()}`;
   const csvFile = `output/elephant_${fileNameAdd}.csv`;
   const htmlFile = `output/elephant_${fileNameAdd}.html`;
   fs.mkdirSync('output', { recursive: true });
