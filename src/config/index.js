@@ -4,12 +4,10 @@ const fs = require('node:fs');
 dotenv.config();
 
 const config = {
-  authorization: {
-    cookie: fs.readFileSync('src/config/cookie.txt', 'utf8').trim(),
-  },
-
   travian: {
     server: process.env.TRAVIAN_SERVER,
+    login: process.env.TRAVIAN_LOGIN,
+    password: process.env.TRAVIAN_PASSWORD,
   },
 
   userAgent:
@@ -35,21 +33,16 @@ const config = {
   },
 };
 
-config.getToken = function getToken() {
-  return fs.readFileSync('src/config/token.txt', 'utf8').trim();
+config.getCookie = function getCookie() {
+  return fs.readFileSync('src/config/cookie.txt', 'utf8').trim();
 };
 
-config.getBearerHeader = function getBearerHeader() {
-  const token = this.getToken();
-  return `Bearer ${token}`;
+config.setCookie = function setCookie(cookie) {
+  fs.writeFileSync('src/config/cookie.txt', cookie);
 };
 
 config.get = function get(option) {
   return option.split('.').reduce((obj, key) => obj?.[key], this);
-};
-
-config.setToken = function setToken(token) {
-  fs.writeFileSync('src/config/token.txt', token);
 };
 
 module.exports = config;

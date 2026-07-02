@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const cliProgress = require('cli-progress');
 const config = require('#src/config/index.js');
 const util = require('#src/services/util.js');
+const auth = require('#src/services/auth.js');
 const travian = require('#src/services/travian.js');
 const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers.js');
 
@@ -95,6 +96,13 @@ const CSV_HEADER = 'x,y,Elephant,Another animal,hasCrocodile,hasTiger,totalAnima
 
 async function main() {
   util.checkConfiguration();
+
+  try {
+    await auth.ensureAuthenticated();
+  } catch (error) {
+    console.error(`Login failed: ${error.message}`);
+    process.exit(1);
+  }
 
   let oasisPositions = readJson(config.jsonFile.oasis);
   const oasisPositionsOccupiedArray = readJson(config.jsonFile.oasisOccupied);

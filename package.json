@@ -29,7 +29,7 @@
     "find": "node src/scripts/findAnimal.js",
     "lint": "biome check src/",
     "lint:fix": "biome check --write src/",
-    "test": "echo \"No test specified\""
+    "test": "node --test"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2"

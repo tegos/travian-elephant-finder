@@ -49,41 +49,27 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 git clone https://github.com/tegos/travian-elephant-finder.git
 cd travian-elephant-finder
 npm install
-npm run setup          # copies .env / cookie.txt / token.txt from their .example files
-# fill in .env and src/config/cookie.txt — see Setup and configuration below
+npm run setup          # copies .env / cookie.txt from their .example files
+# fill in .env — see Setup and configuration below
 npm run collect        # walk the map, record oasis positions
 npm run find           # scan recorded oases for elephants, write CSV + HTML report
 ```
 
 ## Setup and configuration
 
-`npm run setup` copies `.env.example` → `.env`, `cookie.txt.example` → `src/config/cookie.txt` and `token.txt.example` → `src/config/token.txt` if they don't already exist. You then need to fill in two of those:
+`npm run setup` copies `.env.example` → `.env` and `cookie.txt.example` → `src/config/cookie.txt` if they don't already exist. You then need to fill in `.env`.
 
-> **Ban risk:** this tool authenticates using a session cookie copied out of your browser, which is against most game servers' terms of service for automation. Use a throwaway/fake account, not your main one — the maintainer is not responsible for banned accounts.
+> **Ban risk:** this tool logs into your Travian account directly through the game's own login API using the credentials in `.env`, and then automates gameplay. That's against most game servers' terms of service, and submitting real account credentials to a third-party script is an even more direct violation than reusing a copied browser session cookie. Use a throwaway/fake account you're prepared to lose — never your main account. The maintainer is not responsible for banned accounts.
 
-### Cookie
-
-1. Open the map, `https://your-game-world.travian.com/karte.php`
-
-    <img src="assets/map.png" alt="Travian map view" width="700">
-
-2. Open DevTools (F12 in Chrome), Network tab, filter by XHR:
-
-    <img src="assets/dev-tools.png" alt="DevTools network tab filtered by XHR" width="700">
-
-3. Select any request from the list (press F5 first if it's empty) and copy the **cookie** header value:
-
-    <img src="assets/cookies.png" alt="Copying the cookie header from a request" width="700">
-
-4. Paste the cookie value into `src/config/cookie.txt`
-
-`src/config/token.txt` is auto-managed — the tool refreshes it itself whenever the API returns a 401 (`src/services/auth.js`), so you don't need to touch it manually.
+`src/config/cookie.txt` is fully auto-managed — the tool logs in with `TRAVIAN_LOGIN`/`TRAVIAN_PASSWORD` and stores the resulting session cookie there itself (`src/services/auth.js`), refreshing it automatically whenever a request comes back unauthorized. You don't need to touch it.
 
 ### Environment variables (`.env`)
 
 | Variable | Meaning |
 |---|---|
 | `TRAVIAN_SERVER` | Base URL of your game world, e.g. `https://ts8.x1.europe.travian.com` |
+| `TRAVIAN_LOGIN` | Your Travian account username (throwaway account recommended — see disclaimer) |
+| `TRAVIAN_PASSWORD` | Password for that account |
 | `START_X`, `START_Y` | Your village/capital coordinates — used to sort results by distance |
 | `MIN_X`, `MIN_Y` | Top-left corner of the map area to scan |
 | `MAX_X`, `MAX_Y` | Bottom-right corner of the map area to scan |
@@ -125,8 +111,9 @@ Results are saved to `output/`:
 
 ## Troubleshooting
 
-- **`collect`/`find` exits with "Missing required configuration"** — an `.env` variable or `cookie.txt` is empty; re-check the [Setup section](#setup-and-configuration).
-- **`collect`/`find` stalls or errors mid-run** — your session cookie likely expired. Re-extract it (see [Cookie](#cookie)) and rerun; both scripts resume from where `output/oasis.json` / `output/oasis-occupied.json` left off.
+- **`collect`/`find` exits with "Missing required configuration"** — an `.env` variable is empty, most likely `TRAVIAN_LOGIN`/`TRAVIAN_PASSWORD`; re-check the [Setup section](#setup-and-configuration).
+- **`collect`/`find` exits immediately with "Login failed: ..."** — wrong credentials, or the account is locked/banned; double-check `TRAVIAN_LOGIN`/`TRAVIAN_PASSWORD`.
+- **`collect`/`find` stalls or errors mid-run** — the session likely expired; the tool automatically re-authenticates using `TRAVIAN_LOGIN`/`TRAVIAN_PASSWORD` on the next request. If it keeps failing, rerun — both scripts resume from where `output/oasis.json` / `output/oasis-occupied.json` left off.
 - **Getting rate-limited or logged out** — raise `DELAY_MIN`/`DELAY_MAX` in `.env`.
 
 ## Development
