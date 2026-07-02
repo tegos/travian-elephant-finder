@@ -21,7 +21,7 @@
   "engines": {
     "node": ">=22"
   },
-  "author": "Myhkavko Ivan",
+  "author": "Mykhavko Ivan",
   "scripts": {
     "setup": "node scripts/setup.js",
     "clean": "node src/scripts/cleanData.js",
