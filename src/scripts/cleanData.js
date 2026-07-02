@@ -1,6 +1,6 @@
 const fs = require('node:fs').promises;
 const path = require('node:path');
-const config = require('#src/config');
+const config = require('#src/config/index.js');
 
 const directory = 'output';
 

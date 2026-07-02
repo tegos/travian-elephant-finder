@@ -1,5 +1,5 @@
 const axios = require('axios');
-const config = require('#src/config');
+const config = require('#src/config/index.js');
 
 const axiosDefaultInstance = axios.create({ timeout: 10000 });
 
