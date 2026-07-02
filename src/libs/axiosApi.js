@@ -4,15 +4,12 @@ const config = require('#src/config/index.js');
 
 const axiosApiInstance = axios.create({ timeout: 10000 });
 
-axiosApiInstance.defaults.withCredentials = true;
-
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
   (AxiosConfig) => {
     const newAxiosConfig = AxiosConfig;
     newAxiosConfig.headers = {
-      cookie: config.authorization.cookie,
-      Authorization: config.getBearerHeader(),
+      cookie: config.getCookie(),
       'User-Agent': config.userAgent,
     };
 
@@ -26,10 +23,9 @@ axiosApiInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest.isRetry) {
+    if (error.response && error.response.status === 401 && !originalRequest.isRetry) {
       originalRequest.isRetry = true;
-      await auth.refreshToken();
-      axiosApiInstance.defaults.headers.common.Authorization = config.getBearerHeader();
+      await auth.login();
       return axiosApiInstance(originalRequest);
     }
     return Promise.reject(error);

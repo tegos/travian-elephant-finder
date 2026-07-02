@@ -13,8 +13,9 @@ const isEmpty = (value) =>
 
 const checkConfiguration = () => {
   const requiredOptions = [
-    'authorization.cookie',
     'travian.server',
+    'travian.login',
+    'travian.password',
     'coordinates.minX',
     'coordinates.minY',
     'coordinates.maxX',
