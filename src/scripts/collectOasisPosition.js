@@ -25,6 +25,14 @@ async function main() {
 
   const oasisPosition = readJson(config.jsonFile.oasis);
 
+  let villageSet = new Set();
+  try {
+    villageSet = await travian.fetchVillageCoordinates();
+    console.log(`Loaded ${villageSet.size} village tiles from map.sql to skip`);
+  } catch (error) {
+    console.warn(`map.sql unavailable, scanning without village skip: ${error.message}`);
+  }
+
   const startX = Math.min(+config.coordinates.minX, +config.coordinates.maxX);
   const endX = Math.max(+config.coordinates.minX, +config.coordinates.maxX);
   const startY = Math.min(+config.coordinates.minY, +config.coordinates.maxY);
@@ -35,6 +43,11 @@ async function main() {
 
   for (let x = startX; x < endX; x++) {
     for (let y = startY; y < endY; y++) {
+      if (villageSet.has(`${x},${y}`)) {
+        bar.increment();
+        continue;
+      }
+
       try {
         const response = await withRetry(() => travian.viewTileDetails(x, y));
         const { html } = response.data;
