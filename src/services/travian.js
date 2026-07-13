@@ -1,3 +1,4 @@
+const cheerio = require('cheerio');
 const axiosApiInstance = require('#src/libs/axiosApi.js');
 const axiosDefaultInstance = require('#src/libs/axiosDefault.js');
 const config = require('#src/config/index.js');
@@ -25,6 +26,29 @@ const Travian = function Travian() {
     };
 
     return axiosApiInstance.post(`${this.getApiUrl()}/map/tile-details`, sendData);
+  };
+
+  // Parses the active village coordinates out of a dorf1.php page. Travian renders the
+  // minus sign as the Unicode "−" (U+2212), so normalize it to ASCII "-" before parsing.
+  // Pure parser, split out for testing.
+  this.parseOwnCoordinates = function parseOwnCoordinates(html) {
+    const $ = cheerio.load(html);
+    const read = (selector) => {
+      const raw = $(selector).first().text();
+      const normalized = raw.replace(/−/g, '-').replace(/[^0-9-]/g, '');
+      return normalized === '' || normalized === '-' ? null : parseInt(normalized, 10);
+    };
+
+    const x = read('.coordinateX');
+    const y = read('.coordinateY');
+    if (x === null || y === null) return null;
+    return { x, y };
+  };
+
+  // Fetches the active village coordinates (the one dorf1.php opens by default).
+  this.fetchOwnCoordinates = async function fetchOwnCoordinates() {
+    const response = await axiosApiInstance.get(`${config.travian.server}/dorf1.php`);
+    return this.parseOwnCoordinates(response.data);
   };
 
   this.getMapSqlUrl = function getMapSqlUrl() {

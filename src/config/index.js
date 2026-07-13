@@ -14,12 +14,11 @@ const config = {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
 
   coordinates: {
-    minX: process.env.MIN_X,
-    minY: process.env.MIN_Y,
-    maxX: process.env.MAX_X,
-    maxY: process.env.MAX_Y,
+    // Center of the scan. Empty = auto-detected from the active village (see util.resolveScanCenter).
     startX: process.env.START_X,
     startY: process.env.START_Y,
+    // Search radius in map tiles around the center.
+    distance: process.env.DISTANCE,
   },
 
   delay: {
@@ -34,7 +33,11 @@ const config = {
 };
 
 config.getCookie = function getCookie() {
-  return fs.readFileSync('src/config/cookie.txt', 'utf8').trim();
+  try {
+    return fs.readFileSync('src/config/cookie.txt', 'utf8').trim();
+  } catch {
+    return '';
+  }
 };
 
 config.setCookie = function setCookie(cookie) {

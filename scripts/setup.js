@@ -1,9 +1,6 @@
 const fs = require('node:fs');
 
-const files = [
-  ['.env.example', '.env'],
-  ['src/config/cookie.txt.example', 'src/config/cookie.txt'],
-];
+const files = [['.env.example', '.env']];
 
 for (const [src, dst] of files) {
   if (fs.existsSync(dst)) {

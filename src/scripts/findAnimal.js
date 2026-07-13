@@ -104,6 +104,11 @@ async function main() {
     process.exit(1);
   }
 
+  const center = await util.resolveScanCenter();
+  console.log(
+    `Sorting by distance from (${center.x}, ${center.y})${center.auto ? ' (auto-detected from active village)' : ''}`,
+  );
+
   let oasisPositions = readJson(config.jsonFile.oasis);
   const oasisPositionsOccupiedArray = readJson(config.jsonFile.oasisOccupied);
 
@@ -114,8 +119,7 @@ async function main() {
 
   oasisPositions.forEach((obj) => {
     const rObj = obj;
-    const { startX, startY } = config.coordinates;
-    rObj.distance = util.distance(obj.x, obj.y, startX, startY);
+    rObj.distance = util.distance(obj.x, obj.y, center.x, center.y);
   });
 
   oasisPositions.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
@@ -154,8 +158,6 @@ async function main() {
         anotherAnimal = trCount.length - 1;
         const tr = td.closest('tr');
         amount = parseInt(tr.find('.val').text(), 10);
-
-        console.warn({ x, y });
 
         table.find('td.val').each(function valsEach() {
           totalAnimal += parseInt($(this).text(), 10);

@@ -25,6 +25,12 @@ async function main() {
 
   const oasisPosition = readJson(config.jsonFile.oasis);
 
+  const center = await util.resolveScanCenter();
+  const distance = util.resolveDistance();
+  console.log(
+    `Scan center: (${center.x}, ${center.y})${center.auto ? ' (auto-detected from active village)' : ''} · distance: ${distance}`,
+  );
+
   let villageSet = new Set();
   try {
     villageSet = await travian.fetchVillageCoordinates();
@@ -33,41 +39,36 @@ async function main() {
     console.warn(`map.sql unavailable, scanning without village skip: ${error.message}`);
   }
 
-  const startX = Math.min(+config.coordinates.minX, +config.coordinates.maxX);
-  const endX = Math.max(+config.coordinates.minX, +config.coordinates.maxX);
-  const startY = Math.min(+config.coordinates.minY, +config.coordinates.maxY);
-  const endY = Math.max(+config.coordinates.minY, +config.coordinates.maxY);
+  const tiles = util
+    .tilesWithinDistance(center.x, center.y, distance)
+    .filter(({ x, y }) => !villageSet.has(`${x},${y}`));
 
-  const totalFields = (endX - startX) * (endY - startY);
-  bar.start(totalFields, 0);
+  const avgDelay = (config.delay.min + config.delay.max) / 2;
+  const etaMinutes = Math.ceil((tiles.length * avgDelay) / 60000);
+  console.log(`Scanning ${tiles.length} tiles (~${etaMinutes} min at current delay)`);
 
-  for (let x = startX; x < endX; x++) {
-    for (let y = startY; y < endY; y++) {
-      if (villageSet.has(`${x},${y}`)) {
-        bar.increment();
-        continue;
+  bar.start(tiles.length, 0);
+
+  for (const { x, y } of tiles) {
+    try {
+      const response = await withRetry(() => travian.viewTileDetails(x, y));
+      const { html } = response.data;
+      const $ = cheerio.load(html);
+
+      const tileDetails = $('#tileDetails');
+      const className = tileDetails.attr('class');
+      if (className.includes('oasis')) {
+        oasisPosition.push({ x, y });
+        writeJson(config.jsonFile.oasis, oasisPosition);
       }
-
-      try {
-        const response = await withRetry(() => travian.viewTileDetails(x, y));
-        const { html } = response.data;
-        const $ = cheerio.load(html);
-
-        const tileDetails = $('#tileDetails');
-        const className = tileDetails.attr('class');
-        if (className.includes('oasis')) {
-          oasisPosition.push({ x, y });
-          writeJson(config.jsonFile.oasis, oasisPosition);
-        }
-      } catch (err) {
-        bar.stop();
-        console.error(err);
-        process.exit(1);
-      }
-
-      bar.increment();
-      await delay(util.randomIntFromInterval(config.delay.min, config.delay.max));
+    } catch (err) {
+      bar.stop();
+      console.error(err);
+      process.exit(1);
     }
+
+    bar.increment();
+    await delay(util.randomIntFromInterval(config.delay.min, config.delay.max));
   }
 
   bar.stop();
