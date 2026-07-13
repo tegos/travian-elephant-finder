@@ -17,6 +17,24 @@ test('parses village coordinates from map.sql rows', () => {
   assert.ok(coordinates.has('50,50'));
 });
 
+test('parses own village coordinates, normalizing the Unicode minus', () => {
+  const html = `
+    <div id="villageName"></div>
+    <span class="coordinatesWrapper">
+      <span class="coordinateX">(&#8722;24</span>
+      <span class="coordinateY">&#8722;162)</span>
+    </span>`;
+
+  assert.deepEqual(travian.parseOwnCoordinates(html), { x: -24, y: -162 });
+});
+
+test('parses positive own coordinates and returns null when absent', () => {
+  const html = '<span class="coordinateX">(7</span><span class="coordinateY">3)</span>';
+  assert.deepEqual(travian.parseOwnCoordinates(html), { x: 7, y: 3 });
+
+  assert.equal(travian.parseOwnCoordinates('<div>no coords here</div>'), null);
+});
+
 test('handles positive and negative coordinates and empty input', () => {
   const sql =
     "INSERT INTO `x_world` VALUES (1,7,-3,2,100,'x',1,'p',0,'',5,NULL,TRUE,NULL,NULL,NULL);";

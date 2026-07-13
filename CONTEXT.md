@@ -17,6 +17,17 @@ even if the village is later abandoned or destroyed, that tile stays a valley.
 Consequence: **village tiles can be safely skipped when scanning for oases** — zero
 risk of missing an oasis.
 
+### Scan center
+The origin of a search, `(startX, startY)`. Defaults to the player's **active
+village** (the one `dorf1.php` opens), auto-detected from `.coordinateX` /
+`.coordinateY` when `START_X` / `START_Y` are left empty. Can be overridden to any
+coordinate. Doubles as the origin for distance-sorting results.
+
+### Distance
+Search radius in map tiles around the scan center. The scan covers every tile whose
+Euclidean distance from the center is within `DISTANCE` - a circle, not a rectangle.
+Replaces the old `MIN_X/MIN_Y/MAX_X/MAX_Y` bounding box.
+
 ### Occupied oasis
 An oasis annexed to a nearby village. Still an oasis tile, but can't be cleared for
 yourself. Detected live via the `oasis-3` CSS class on the tile popup and excluded

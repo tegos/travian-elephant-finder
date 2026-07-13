@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+      .tile-in { fill: #1e293b; }
+      .tile-out { fill: #0b1220; }
+      .ring { fill: rgba(249,115,22,0.08); stroke: #f97316; stroke-width: 2; stroke-dasharray: 6 5; }
+      .home { fill: #38bdf8; }
+      .oasis { fill: #22c55e; }
+      .label { fill: #e2e8f0; font-size: 15px; }
+      .muted { fill: #94a3b8; font-size: 13px; }
+      .accent { fill: #f97316; font-weight: 700; }
+      .radius-line { stroke: #f97316; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="640" height="480" rx="12"/>
+
+  <!-- title -->
+  <text class="label" x="32" y="44" font-size="20" font-weight="700">Search by distance</text>
+  <text class="muted" x="32" y="68">Scan every tile within DISTANCE of your village. No box to figure out.</text>
+
+  <!-- grid of tiles -->
+  <g transform="translate(320,270)">
+    <!-- tiles: 11x11 grid, spacing 28, center at 0,0 -->
+    <g id="tiles">
+    <rect class="tile-out" x="-151" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-151" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-123" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-123" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-95" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-95" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-95" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-95" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-95" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-95" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-67" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-67" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-67" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-67" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-67" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-39" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-39" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-39" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-39" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-39" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-11" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="-11" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="-11" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="17" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="17" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="17" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="17" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="17" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="45" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="45" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="45" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="45" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="45" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="73" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="73" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="73" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="73" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="73" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="73" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-in" x="101" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="101" y="129" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-151" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-123" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-95" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-67" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-39" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="-11" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="17" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="45" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="73" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="101" width="22" height="22" rx="4"/>
+    <rect class="tile-out" x="129" y="129" width="22" height="22" rx="4"/>
+    </g>
+
+    <!-- distance ring: radius 4 tiles = 112px -->
+    <circle class="ring" cx="0" cy="0" r="118"/>
+
+    <!-- radius line -->
+    <line class="radius-line" x1="0" y1="0" x2="112" y2="-40"/>
+    <text class="accent" x="40" y="-40" font-size="14">DISTANCE</text>
+
+    <!-- oases inside ring -->
+    <circle class="oasis" cx="-56" cy="28" r="8"/>
+    <circle class="oasis" cx="28" cy="-56" r="8"/>
+    <circle class="oasis" cx="84" cy="56" r="8"/>
+    <circle class="oasis" cx="-28" cy="-84" r="8"/>
+
+    <!-- home village at center -->
+    <rect class="home" x="-11" y="-11" width="22" height="22" rx="4"/>
+  </g>
+
+  <!-- legend -->
+  <g transform="translate(32,430)">
+    <rect class="home" x="0" y="-11" width="16" height="16" rx="3"/>
+    <text class="label" x="24" y="2">Your village (center)</text>
+
+    <circle class="oasis" cx="228" cy="-3" r="7"/>
+    <text class="label" x="244" y="2">Oasis found</text>
+
+    <circle cx="388" cy="-3" r="7" fill="rgba(249,115,22,0.15)" stroke="#f97316" stroke-width="1.5"/>
+    <text class="label" x="404" y="2">Search area</text>
+  </g>
+</svg>
