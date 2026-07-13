@@ -125,26 +125,18 @@ Need a fresh start? `npm run clean` empties the `output/` folder and resets the 
 
 ## Understanding the report
 
-The HTML report lists every oasis that holds elephants, sorted by distance from your center. Click any column header to re-sort.
+The HTML report lists every oasis that holds elephants. Each coordinate links straight to that tile on the in-game map, and you can click any column header to re-sort.
 
 <img src="assets/result-oasis.png" alt="Sortable HTML report" width="700">
 
 | Column | Meaning |
 |---|---|
-| `x`, `y` | Oasis coordinates |
-| `Elephant` | How many elephants guard the oasis |
-| `Another animal` | How many other animal types are present |
-| `hasCrocodile`, `hasTiger` | Whether crocodiles / tigers are present |
-| `totalAnimal` | Total number of animals guarding the oasis |
+| `Oasis` | Oasis coordinates, linked to the tile on the in-game map |
+| `Elephants` | How many elephants guard the oasis |
+| `Guards` | The full guard list - every animal type and its count, with elephants highlighted |
+| `Distance` | Distance from your scan center, in fields |
 
-Example rows:
-
-| x | y | Elephant | Another animal | hasCrocodile | hasTiger | totalAnimal |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| -18 | 5 | 7 | 6 | 1 | 1 | 141 |
-| -14 | 3 | 4 | 5 | 0 | 0 | 34 |
-| -42 | 14 | 3 | 4 | 0 | 0 | 77 |
-| -48 | -7 | 3 | 4 | 0 | 0 | 84 |
+The `elephant_*.csv` alongside it holds the same data as plain columns (`x, y, distance, elephants, totalAnimals, guards`) for spreadsheets.
 
 ## Troubleshooting
 
