@@ -62,9 +62,14 @@ async function main() {
         writeJson(config.jsonFile.oasis, oasisPosition);
       }
     } catch (err) {
-      bar.stop();
-      console.error(err);
-      process.exit(1);
+      // Tiles past the world boundary return HTTP 400 ("invalid values"). Villages
+      // near the map edge push a wide-DISTANCE circle off-map, so skip those tiles
+      // instead of aborting the whole scan.
+      if (err?.response?.status !== 400) {
+        bar.stop();
+        console.error(err);
+        process.exit(1);
+      }
     }
 
     bar.increment();
