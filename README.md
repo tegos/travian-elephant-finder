@@ -22,6 +22,7 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 
 ## Table of contents
 
+- [Why elephant oases?](#why-elephant-oases)
 - [How the search works](#how-the-search-works)
 - [Requirements](#requirements)
 - [Quickstart](#quickstart)
@@ -34,6 +35,37 @@ Tested in **Shadow Empires**, **Fire and Sand** and **Legends (4)**.
 - [Author](#author)
 - [License](#license)
 - [Disclaimer](#disclaimer)
+
+## Why elephant oases?
+
+Clearing an oasis is one of the strongest early plays in Travian, and elephants make it pay off the most in three ways:
+
+- **Hero experience.** Your hero earns XP equal to each animal's crop upkeep. The elephant has the highest upkeep (`5`), so it gives the most XP per kill - an elephant oasis levels your hero fastest.
+- **A permanent village bonus.** Once the guards are gone you can annex the oasis to a village within 3 tiles (via the Hero's Mansion) for a lasting production bonus (+25% / +50%, or extra crop).
+- **The best free defenders on the map.** Attack an oasis with **Cages** equipped on your hero and you *capture* the animals instead of killing them. Captured animals are stationed in your hero's home village and defend it at zero crop upkeep. Cages take the weakest animals first and the elephant last, so an elephant is the top prize: `440` defense vs infantry, `520` vs cavalry, no food cost.
+
+Note: **Cages** is a hero consumable item - not the Gaul **Trapper** building, which captures attacking *enemy troops*, not wild animals. Different systems, easy to mix up.
+
+That is why this tool hunts elephant oases specifically: the most hero XP, and the strongest defenders you can add for free.
+
+### Animal guard stats
+
+What each oasis animal is worth - as a guard you fight, and as a defender if you cage it (Travian T4 / Legends standard-speed values):
+
+| Animal | Attack | Def vs infantry | Def vs cavalry | Upkeep (= hero XP) |
+|---|--:|--:|--:|--:|
+| Rat | 10 | 25 | 10 | 1 |
+| Spider | 20 | 35 | 40 | 1 |
+| Snake | 60 | 40 | 60 | 1 |
+| Bat | 80 | 66 | 50 | 1 |
+| Wild Boar | 50 | 70 | 33 | 2 |
+| Wolf | 100 | 80 | 70 | 2 |
+| Bear | 250 | 140 | 200 | 3 |
+| Tiger | 200 | 170 | 250 | 3 |
+| Crocodile | 450 | 380 | 240 | 3 |
+| Elephant | 600 | 440 | 520 | 5 |
+
+Higher defense means a better caged defender; higher upkeep means more hero XP. The elephant tops both, with crocodile and tiger close behind - which is why the report counts elephants and shows the full guard list next to them.
 
 ## How the search works
 
@@ -144,7 +176,7 @@ The `elephant_*.csv` alongside it holds the same data as plain columns (`x, y, d
 - **Exits with "Login failed: ..."** - wrong credentials, or the account is locked/banned. Double-check your login and password.
 - **"Could not auto-detect village coordinates"** - the tool couldn't read your village from the game. Fill in `START_X` and `START_Y` manually.
 - **Scan is too slow** - lower `DISTANCE`, or raise `DELAY_MIN` / `DELAY_MAX` if you're being rate-limited. The tile count and time estimate printed at the start tell you what to expect.
-- **Stalls or errors mid-run** - the session likely expired; the tool re-logs in automatically on the next request. If it keeps failing, just rerun - both scripts resume from where they left off (`output/oasis.json`).
+- **Stalls or errors mid-run** - the session likely expired; the tool re-logs in automatically on the next request. If it keeps failing, just rerun: `find` picks up where it stopped and skips oases it already checked. `collect` re-scans from the start and appends, so run `npm run clean` first when restarting a collect to avoid duplicate entries.
 
 ## Development
 
