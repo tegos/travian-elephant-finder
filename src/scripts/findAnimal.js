@@ -6,6 +6,21 @@ const util = require('#src/services/util.js');
 const auth = require('#src/services/auth.js');
 const travian = require('#src/services/travian.js');
 const { delay, readJson, writeJson, withRetry } = require('#src/libs/helpers.js');
+const animalIcons = require('#src/config/animalIcons.js');
+
+// One oasis row: coordinates link, elephant count, the full guard list on a single
+// line (icon + count per animal), and the distance from the scan center in fields.
+const guardsCell = (troops) =>
+  troops
+    .map(
+      (t) =>
+        `<span class="guard${t.u === 'u40' ? ' guard-elephant' : ''}">${
+          animalIcons[t.u]
+            ? `<img src="${animalIcons[t.u]}" alt="${t.name}" title="${t.name}"/>`
+            : ''
+        }${t.n}</span>`,
+    )
+    .join('');
 
 const buildHtml = (rows, server) => `<!DOCTYPE html>
 <html lang="en">
@@ -25,10 +40,16 @@ const buildHtml = (rows, server) => `<!DOCTYPE html>
     th:hover { color: #e2e8f0; }
     th.asc::after  { content: ' ↑'; }
     th.desc::after { content: ' ↓'; }
-    td { padding: 0.6rem 1rem; border-bottom: 1px solid #1e293b; }
+    td { padding: 0.6rem 1rem; border-bottom: 1px solid #1e293b; vertical-align: middle; }
     tr:hover td { background: #1e293b; }
     .num { text-align: right; font-variant-numeric: tabular-nums; }
-    .elephant { color: #f97316; font-weight: 700; }
+    .coord { color: #38bdf8; text-decoration: none; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .coord:hover { text-decoration: underline; }
+    .elephants { color: #f97316; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+    .guards { display: flex; flex-wrap: wrap; gap: 0.3rem 0.7rem; }
+    .guard { display: inline-flex; align-items: center; gap: 0.25rem; color: #cbd5e1; white-space: nowrap; }
+    .guard img { width: 26px; height: 26px; object-fit: contain; }
+    .guard-elephant { color: #f97316; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -37,13 +58,10 @@ const buildHtml = (rows, server) => `<!DOCTYPE html>
   <table id="t">
     <thead>
       <tr>
-        <th data-col="0">x</th>
-        <th data-col="1">y</th>
-        <th data-col="2">Elephants</th>
-        <th data-col="3">Other animals</th>
-        <th data-col="4">Crocodiles</th>
-        <th data-col="5">Tigers</th>
-        <th data-col="6">Total animals</th>
+        <th data-col="0">Oasis</th>
+        <th data-col="1">Elephants</th>
+        <th data-col="2">Guards</th>
+        <th data-col="3">Distance</th>
       </tr>
     </thead>
     <tbody>
@@ -51,13 +69,10 @@ const buildHtml = (rows, server) => `<!DOCTYPE html>
         .map(
           (r) =>
             `<tr>
-        <td class="num">${r.x}</td>
-        <td class="num">${r.y}</td>
-        <td class="num elephant">${r.elephants}</td>
-        <td class="num">${r.other}</td>
-        <td class="num">${r.crocs}</td>
-        <td class="num">${r.tigers}</td>
-        <td class="num">${r.total}</td>
+        <td data-sort="${r.distance}"><a class="coord" href="${server}/karte.php?x=${r.x}&amp;y=${r.y}" target="_blank" rel="noopener">(${r.x}|${r.y})</a></td>
+        <td class="elephants" data-sort="${r.elephants}">${r.elephants}</td>
+        <td data-sort="${r.total}"><div class="guards">${guardsCell(r.troops)}</div></td>
+        <td class="num" data-sort="${r.distance}">${r.distance.toFixed(2)} fields</td>
       </tr>`,
         )
         .join('\n      ')}
@@ -65,7 +80,7 @@ const buildHtml = (rows, server) => `<!DOCTYPE html>
   </table>
   <script>
     const t = document.getElementById('t');
-    let sortCol = 2, sortDir = -1;
+    let sortCol = 1, sortDir = -1;
     t.querySelector('thead').addEventListener('click', (e) => {
       const th = e.target.closest('th');
       if (!th) return;
@@ -76,7 +91,7 @@ const buildHtml = (rows, server) => `<!DOCTYPE html>
       th.classList.add(sortDir === -1 ? 'desc' : 'asc');
       const rows = [...t.querySelectorAll('tbody tr')];
       rows.sort((a, b) => {
-        const v = (r) => +r.cells[col].textContent;
+        const v = (r) => { const c = r.cells[col]; const s = c.dataset.sort; return s !== undefined ? parseFloat(s) : c.textContent; };
         return sortDir * (v(b) - v(a));
       });
       rows.forEach(r => t.querySelector('tbody').appendChild(r));
@@ -92,7 +107,7 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-const CSV_HEADER = 'x,y,Elephant,Another animal,hasCrocodile,hasTiger,totalAnimal\n';
+const CSV_HEADER = 'x,y,distance,elephants,totalAnimals,guards\n';
 
 async function main() {
   util.checkConfiguration();
@@ -145,38 +160,30 @@ async function main() {
       const $ = cheerio.load(html);
 
       const table = $('#troop_info').first();
-      const td = table.find(`img.${travian.animals.Elephants}`);
-      const hasCrocodile = table.find(`img.${travian.animals.Crocodiles}`);
-      const hasTiger = table.find(`img.${travian.animals.Tigers}`);
-      const trCount = table.find('tr');
 
-      let anotherAnimal = 0;
+      // Parse the full guard list once: each row is one animal type (icon class + count + name).
+      const troops = [];
+      let elephants = 0;
       let totalAnimal = 0;
-      let amount = 0;
+      table.find('tr').each((_i, tr) => {
+        const cls = ($(tr).find('img.unit').first().attr('class') || '')
+          .split(/\s+/)
+          .find((c) => /^u\d+$/.test(c));
+        const n = parseInt($(tr).find('.val').text(), 10);
+        const name = $(tr).find('.desc').text().trim();
+        if (!cls || !Number.isFinite(n)) return;
+        troops.push({ u: cls, n, name });
+        totalAnimal += n;
+        if (cls === travian.animals.Elephants) elephants = n;
+      });
 
-      if (td.length > 0) {
-        anotherAnimal = trCount.length - 1;
-        const tr = td.closest('tr');
-        amount = parseInt(tr.find('.val').text(), 10);
-
-        table.find('td.val').each(function valsEach() {
-          totalAnimal += parseInt($(this).text(), 10);
-        });
-      }
-
-      if (amount > 0) {
-        const row = `${x},${y},${amount},${anotherAnimal},${hasCrocodile.length},${hasTiger.length},${totalAnimal}\n`;
+      if (elephants > 0) {
+        const { distance } = oasisPositions[pos];
+        const guardSummary = troops.map((t) => `${t.n} ${t.name}`).join('; ');
+        const row = `${x},${y},${distance.toFixed(2)},${elephants},${totalAnimal},"${guardSummary}"\n`;
         fs.appendFileSync(csvFile, row);
 
-        results.push({
-          x,
-          y,
-          elephants: amount,
-          other: anotherAnimal,
-          crocs: hasCrocodile.length,
-          tigers: hasTiger.length,
-          total: totalAnimal,
-        });
+        results.push({ x, y, distance, elephants, total: totalAnimal, troops });
         fs.writeFileSync(htmlFile, buildHtml(results, config.travian.server));
       }
 
